@@ -5,10 +5,12 @@ import { TodosBucket, XAWS } from '../../config'
 import { getUserId } from '../utils'
 import { GenerateURLRequest } from '../../requests/GenerateURLRequest'
 import { updateAttachmentURLTodo } from '../persitence/persistence.layer'
+import { createLogger } from '../../utils/logger'
+const logger = createLogger('CreateTodo')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   
-  console.log(event)
+  logger.info('GenerateUploadURL Event called', event)
   const userId = getUserId(event);
   const todo: GenerateURLRequest  = JSON.parse(event.body);
   const todoId = event.pathParameters.todoId;

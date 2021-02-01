@@ -6,9 +6,12 @@ import { v4 as uuid  } from 'uuid'
 import { TodoItem } from '../../models/TodoItem'
 import { getUserId } from '../utils'
 import { createTotoPersistence } from '../persitence/persistence.layer'
+import { createLogger } from '../../utils/logger'
+const logger = createLogger('CreateTodo')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  console.log(event)
+  logger.info('Create Todo Event called', event)
+  
   const newTodo: CreateTodoRequest = JSON.parse(event.body)
 
   const userId = getUserId(event)

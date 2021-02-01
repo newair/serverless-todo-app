@@ -3,9 +3,12 @@ import { docClient, TodosTable, TodosBucket } from '../../config'
 import { TodoItem } from '../../models/TodoItem'
 import { GenerateURLRequest } from '../../requests/GenerateURLRequest'
 import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
+import { createLogger } from '../../utils/logger'
+const logger = createLogger('CreateTodo')
 
 export const createTotoPersistence = async (newTodoPersistable: TodoItem) => {
 
+  logger.info('Creating Todo ', newTodoPersistable)
     await docClient.put({
         TableName: TodosTable,
         Item: newTodoPersistable,
@@ -17,6 +20,8 @@ export const createTotoPersistence = async (newTodoPersistable: TodoItem) => {
 }
 
 export const updateTodo = async (userId: string, todoId: string, updatedTodo: UpdateTodoRequest) => {
+
+  logger.info('Updating Todo ', updatedTodo)
 
   const persitedTodo = await docClient.update({
     TableName: TodosTable,
@@ -42,6 +47,8 @@ export const updateTodo = async (userId: string, todoId: string, updatedTodo: Up
 
 export const updateAttachmentURLTodo = async (userId: string, todoId: string, updatedTodo: GenerateURLRequest) => {
 
+  logger.info('Updating attachmentURL Todo ', updatedTodo)
+
   const persitedTodo = await docClient.update({
     TableName: TodosTable,
     Key: {
@@ -59,6 +66,9 @@ export const updateAttachmentURLTodo = async (userId: string, todoId: string, up
 }
 
 export const getTodos = async (userId: string) => {
+
+  logger.info('Getting Todos for user ', userId)
+
   const todos = await docClient.query({
     TableName: TodosTable,
     KeyConditionExpression: 'userId = :userId',
@@ -71,6 +81,9 @@ export const getTodos = async (userId: string) => {
 }
 
 export const deleteTodo = async (todoId: string, userId: string) => {
+
+  logger.info('Deleting Todo ', todoId)
+
   const todo = await docClient.delete({
     TableName: TodosTable,
     Key:{
